@@ -1,14 +1,17 @@
 <template>
   <div class="right-panel">
+    <!-- Khusus untuk menampilkan folder -->
     <div class="section">
-      <VirtualList :items="folders" :itemHeight="28" :height="280">
+      <VirtualList :items="folders" :itemHeight="28" :height="28">
         <template #default="{ item }">
           <div class="row">{{ item.name }}</div>
         </template>
       </VirtualList>
     </div>
+
+    <!-- Khusus untuk menampilkan file -->
     <div class="section">
-      <VirtualList :items="files" :itemHeight="28" :height="280">
+      <VirtualList :items="files" :itemHeight="28" :height="28">
         <template #default="{ item }">
           <div class="row">{{ item.name }} ({{ item.size }} B)</div>
         </template>
