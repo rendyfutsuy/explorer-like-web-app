@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Folder {
+  id         String   @id @default(uuid())
+  name       String
+  parent_id  String? 
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  files      File[]
+
+  @@index([parent_id])
+}
+
+model File {
+  id         String   @id @default(uuid())
+  name       String
+  folder_id  String
+  size       BigInt
+  created_at DateTime @default(now())
+  folder     Folder   @relation(fields: [folder_id], references: [id], onDelete: Cascade)
+
+  @@index([folder_id])
+}
