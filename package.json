@@ -29,5 +29,5 @@
     "apps/*",
     "packages/*"
   ],
-  "module": "src/index.js"
+  "module": "./apps/backend/src/index.ts"
 }
