@@ -5,7 +5,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "bun run --watch apps/backend/src/index.ts",
     "dev:backend": "bun run --watch apps/backend/src/index.ts",
-    "dev:frontend": "cd apps/frontend && bun run dev",
+    "dev:frontend": "bunx vite apps/frontend",
     "start": "bun run apps/backend/src/index.ts",
     "prisma:generate": "cd apps/backend && prisma generate",
     "prisma:migrate": "cd apps/backend && prisma migrate dev",
@@ -18,16 +18,21 @@
     "@prisma/client": "latest",
     "dotenv": "^17.3.1",
     "elysia": "latest",
-    "pg": "latest"
+    "pg": "latest",
+    "pinia": "^3.0.4",
+    "vue": "^3.5.25"
   },
   "devDependencies": {
     "bun-types": "latest",
     "prisma": "latest",
-    "@types/pg": "latest"
+    "@types/pg": "latest",
+    "@types/node": "^24.10.1",
+    "@vitejs/plugin-vue": "^6.0.2",
+    "@vue/tsconfig": "^0.8.1",
+    "typescript": "~5.9.3",
+    "vite": "^7.3.1",
+    "vue-tsc": "^3.1.5"
   },
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
+  "workspaces": ["packages/*"],
   "module": "./apps/backend/src/index.ts"
 }

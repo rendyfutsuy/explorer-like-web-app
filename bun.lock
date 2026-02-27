@@ -11,40 +11,16 @@
         "dotenv": "^17.3.1",
         "elysia": "latest",
         "pg": "latest",
-      },
-      "devDependencies": {
-        "@types/pg": "latest",
-        "bun-types": "latest",
-        "prisma": "latest",
-      },
-    },
-    "apps/backend": {
-      "name": "backend",
-      "version": "0.0.0",
-      "dependencies": {
-        "@elysiajs/cors": "^1.4.1",
-        "@prisma/adapter-pg": "latest",
-        "@prisma/client": "latest",
-        "@repo/shared-types": "workspace:*",
-        "elysia": "latest",
-        "pg": "latest",
-      },
-      "devDependencies": {
-        "bun-types": "latest",
-      },
-    },
-    "apps/frontend": {
-      "name": "frontend",
-      "version": "0.0.0",
-      "dependencies": {
-        "@repo/shared-types": "workspace:*",
         "pinia": "^3.0.4",
         "vue": "^3.5.25",
       },
       "devDependencies": {
         "@types/node": "^24.10.1",
+        "@types/pg": "latest",
         "@vitejs/plugin-vue": "^6.0.2",
         "@vue/tsconfig": "^0.8.1",
+        "bun-types": "latest",
+        "prisma": "latest",
         "typescript": "~5.9.3",
         "vite": "^7.3.1",
         "vue-tsc": "^3.1.5",
@@ -276,8 +252,6 @@
 
     "aws-ssl-profiles": ["aws-ssl-profiles@1.1.2", "", {}, "sha512-NZKeq9AfyQvEeNlN0zSYAaWrmBffJh3IELMZfRpJVWgrpEbtEpnjvzqBPf+mxoI287JohRDoa+/nsfqqiZmF6g=="],
 
-    "backend": ["backend@workspace:apps/backend"],
-
     "birpc": ["birpc@2.9.0", "", {}, "sha512-KrayHS5pBi69Xi9JmvoqrIgYGDkD6mcSe/i6YKi3w5kekCLzrX4+nawcXqrj2tIp50Kw/mT/s3p+GVK0A0sKxw=="],
 
     "bun-types": ["bun-types@1.3.10", "", { "dependencies": { "@types/node": "*" } }, "sha512-tcpfCCl6XWo6nCVnpcVrxQ+9AYN1iqMIzgrSKYMB/fjLtV2eyAVEg7AxQJuCq/26R6HpKWykQXuSOq/21RYcbg=="],
@@ -339,8 +313,6 @@
     "file-type": ["file-type@21.3.0", "", { "dependencies": { "@tokenizer/inflate": "^0.4.1", "strtok3": "^10.3.4", "token-types": "^6.1.1", "uint8array-extras": "^1.4.0" } }, "sha512-8kPJMIGz1Yt/aPEwOsrR97ZyZaD1Iqm8PClb1nYFclUCkBi0Ma5IsYNQzvSFS9ib51lWyIw5mIT9rWzI/xjpzA=="],
 
     "foreground-child": ["foreground-child@3.3.1", "", { "dependencies": { "cross-spawn": "^7.0.6", "signal-exit": "^4.0.1" } }, "sha512-gIXjKqtFuWEgzFRJA9WCQeSJLZDjgJUOMCMzxtvFq/37KojM1BFGufqsCy0r4qSQmYLsZYMeyRqzIWOMup03sw=="],
-
-    "frontend": ["frontend@workspace:apps/frontend"],
 
     "fsevents": ["fsevents@2.3.3", "", { "os": "darwin" }, "sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw=="],
 
