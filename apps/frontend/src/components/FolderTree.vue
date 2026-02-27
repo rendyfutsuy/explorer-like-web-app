@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import FolderNode from './FolderNode.vue'
-import type { FolderNode as FolderNodeType } from '../types'
+import type { FolderNode as FolderNodeType } from '@repo/shared-types'
 
 defineProps<{ tree: FolderNodeType[] }>()
 const emit = defineEmits<{ (e: 'select', id: string): void }>()

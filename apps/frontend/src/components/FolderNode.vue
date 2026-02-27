@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { FolderNode as FolderNodeType } from '../types'
+import type { FolderNode as FolderNodeType } from '@repo/shared-types'
 import FolderNode from './FolderNode.vue'
 
 const props = defineProps<{ folder: FolderNodeType }>()

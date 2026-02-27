@@ -8,14 +8,14 @@ export type FolderRecord = {
   id: string
   name: string
   parent_id: string | null
-  created_at: string | Date
-  updated_at: string | Date
+  created_at: Date
+  updated_at: Date
 }
 
 export type FileRecord = {
   id: string
   name: string
   folder_id: string
-  size: number | bigint
-  created_at: string | Date
+  size: bigint
+  created_at: Date
 }
