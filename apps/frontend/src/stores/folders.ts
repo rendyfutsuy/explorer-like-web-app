@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import type { FolderNode, FolderRecord, FileRecord } from '@repo/shared-types'
+import type { FolderNode, FolderRecord, ItemRecord } from '@repo/shared-types'
 
 const baseUrl = `${location.protocol}//${location.hostname}:8081`
 
 export const useFoldersStore = defineStore('folders', () => {
   const tree = ref<FolderNode[]>([])
-  const children = ref<{ folders: FolderRecord[]; files: FileRecord[] }>({ folders: [], files: [] })
+  const children = ref<ItemRecord[]>([])
   const selectedId = ref<string | null>(null)
   const searchQuery = ref('')
   const parentMap = ref<Record<string, string | null>>({})

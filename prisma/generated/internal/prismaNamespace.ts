@@ -384,8 +384,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
-  Folder: 'Folder',
-  File: 'File'
+  Item: 'Item'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -401,155 +400,81 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "folder" | "file"
+    modelProps: "item"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
-    Folder: {
-      payload: Prisma.$FolderPayload<ExtArgs>
-      fields: Prisma.FolderFieldRefs
+    Item: {
+      payload: Prisma.$ItemPayload<ExtArgs>
+      fields: Prisma.ItemFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.FolderFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FolderPayload> | null
+          args: Prisma.ItemFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ItemPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.FolderFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FolderPayload>
+          args: Prisma.ItemFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ItemPayload>
         }
         findFirst: {
-          args: Prisma.FolderFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FolderPayload> | null
+          args: Prisma.ItemFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ItemPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.FolderFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FolderPayload>
+          args: Prisma.ItemFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ItemPayload>
         }
         findMany: {
-          args: Prisma.FolderFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FolderPayload>[]
+          args: Prisma.ItemFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ItemPayload>[]
         }
         create: {
-          args: Prisma.FolderCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FolderPayload>
+          args: Prisma.ItemCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ItemPayload>
         }
         createMany: {
-          args: Prisma.FolderCreateManyArgs<ExtArgs>
+          args: Prisma.ItemCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         createManyAndReturn: {
-          args: Prisma.FolderCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FolderPayload>[]
+          args: Prisma.ItemCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ItemPayload>[]
         }
         delete: {
-          args: Prisma.FolderDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FolderPayload>
+          args: Prisma.ItemDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ItemPayload>
         }
         update: {
-          args: Prisma.FolderUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FolderPayload>
+          args: Prisma.ItemUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ItemPayload>
         }
         deleteMany: {
-          args: Prisma.FolderDeleteManyArgs<ExtArgs>
+          args: Prisma.ItemDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.FolderUpdateManyArgs<ExtArgs>
+          args: Prisma.ItemUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateManyAndReturn: {
-          args: Prisma.FolderUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FolderPayload>[]
+          args: Prisma.ItemUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ItemPayload>[]
         }
         upsert: {
-          args: Prisma.FolderUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FolderPayload>
+          args: Prisma.ItemUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ItemPayload>
         }
         aggregate: {
-          args: Prisma.FolderAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateFolder>
+          args: Prisma.ItemAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateItem>
         }
         groupBy: {
-          args: Prisma.FolderGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.FolderGroupByOutputType>[]
+          args: Prisma.ItemGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ItemGroupByOutputType>[]
         }
         count: {
-          args: Prisma.FolderCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.FolderCountAggregateOutputType> | number
-        }
-      }
-    }
-    File: {
-      payload: Prisma.$FilePayload<ExtArgs>
-      fields: Prisma.FileFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.FileFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilePayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.FileFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilePayload>
-        }
-        findFirst: {
-          args: Prisma.FileFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilePayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.FileFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilePayload>
-        }
-        findMany: {
-          args: Prisma.FileFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilePayload>[]
-        }
-        create: {
-          args: Prisma.FileCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilePayload>
-        }
-        createMany: {
-          args: Prisma.FileCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.FileCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilePayload>[]
-        }
-        delete: {
-          args: Prisma.FileDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilePayload>
-        }
-        update: {
-          args: Prisma.FileUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilePayload>
-        }
-        deleteMany: {
-          args: Prisma.FileDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.FileUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.FileUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilePayload>[]
-        }
-        upsert: {
-          args: Prisma.FileUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilePayload>
-        }
-        aggregate: {
-          args: Prisma.FileAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateFile>
-        }
-        groupBy: {
-          args: Prisma.FileGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.FileGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.FileCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.FileCountAggregateOutputType> | number
+          args: Prisma.ItemCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ItemCountAggregateOutputType> | number
         }
       }
     }
@@ -592,26 +517,18 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-export const FolderScalarFieldEnum = {
+export const ItemScalarFieldEnum = {
   id: 'id',
   name: 'name',
   parent_id: 'parent_id',
+  size: 'size',
+  file_path: 'file_path',
+  is_file: 'is_file',
   created_at: 'created_at',
   updated_at: 'updated_at'
 } as const
 
-export type FolderScalarFieldEnum = (typeof FolderScalarFieldEnum)[keyof typeof FolderScalarFieldEnum]
-
-
-export const FileScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  folder_id: 'folder_id',
-  size: 'size',
-  created_at: 'created_at'
-} as const
-
-export type FileScalarFieldEnum = (typeof FileScalarFieldEnum)[keyof typeof FileScalarFieldEnum]
+export type ItemScalarFieldEnum = (typeof ItemScalarFieldEnum)[keyof typeof ItemScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -659,20 +576,6 @@ export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
 
 
 /**
- * Reference to a field of type 'DateTime'
- */
-export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
-    
-
-
-/**
- * Reference to a field of type 'DateTime[]'
- */
-export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
-    
-
-
-/**
  * Reference to a field of type 'BigInt'
  */
 export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt'>
@@ -683,6 +586,27 @@ export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 
  * Reference to a field of type 'BigInt[]'
  */
 export type ListBigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
+ * Reference to a field of type 'DateTime'
+ */
+export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+/**
+ * Reference to a field of type 'DateTime[]'
+ */
+export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
     
 
 
@@ -808,8 +732,7 @@ export type PrismaClientOptions = ({
   comments?: runtime.SqlCommenterPlugin[]
 }
 export type GlobalOmitConfig = {
-  folder?: Prisma.FolderOmit
-  file?: Prisma.FileOmit
+  item?: Prisma.ItemOmit
 }
 
 /* Types for Logging */

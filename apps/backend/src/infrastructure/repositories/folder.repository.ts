@@ -1,28 +1,24 @@
 import { prisma } from "../database/prisma"
-import type { FolderNode, FolderRecord, FileRecord } from "@repo/shared-types"
+import type { FolderNode, FolderRecord, ItemRecord } from "@repo/shared-types"
 
-type FolderRow = {
+type ItemRow = {
   id: string
   name: string
   parent_id: string | null
+  size: bigint | number | null
+  file_path: string | null
+  is_file: boolean
   created_at: Date
   updated_at: Date
 }
 
-type FileRow = {
-  id: string
-  name: string
-  folder_id: string
-  size: bigint | number
-  created_at: Date
-}
-
 export class FolderRepository {
   async getAllFolders(): Promise<FolderRecord[]> {
-    const rows: FolderRow[] = await prisma.folder.findMany({
-      select: { id: true, name: true, parent_id: true, created_at: true, updated_at: true }
+    const rows: ItemRow[] = await prisma.item.findMany({
+      where: { is_file: false },
+      select: { id: true, name: true, parent_id: true, created_at: true, updated_at: true, size: true, file_path: true, is_file: true }
     })
-    return rows.map((r: FolderRow) => ({
+    return rows.map((r: ItemRow) => ({
       id: r.id,
       name: r.name,
       parent_id: r.parent_id ?? null,
@@ -51,30 +47,19 @@ export class FolderRepository {
     return build(null)
   }
 
-  async getChildren(folderId: string): Promise<{ folders: FolderRecord[]; files: FileRecord[] }> {
-    const folders: FolderRow[] = await prisma.folder.findMany({
+  async getChildren(folderId: string): Promise<ItemRecord[]> {
+    const rows: ItemRow[] = await prisma.item.findMany({
       where: { parent_id: folderId },
-      select: { id: true, name: true, parent_id: true, created_at: true, updated_at: true }
+      select: { id: true, name: true, parent_id: true, size: true, file_path: true, is_file: true, created_at: true, updated_at: true }
     })
-    const files: FileRow[] = await prisma.file.findMany({
-      where: { folder_id: folderId },
-      select: { id: true, name: true, folder_id: true, size: true, created_at: true }
-    })
-    return {
-      folders: folders.map((f: FolderRow) => ({
-        id: f.id,
-        name: f.name,
-        parent_id: f.parent_id ?? null,
-        created_at: f.created_at,
-        updated_at: f.updated_at
-      })),
-      files: files.map((fl: FileRow) => ({
-        id: fl.id,
-        name: fl.name,
-        folder_id: fl.folder_id,
-        size: Number(fl.size),
-        created_at: fl.created_at
-      }))
-    }
+    return rows.map((r: ItemRow) => ({
+      id: r.id,
+      name: r.name,
+      parent_id: r.parent_id ?? null,
+      size: r.size != null ? Number(r.size) : null,
+      file_path: r.file_path,
+      is_file: r.is_file,
+      created_at: r.created_at
+    }))
   }
 }

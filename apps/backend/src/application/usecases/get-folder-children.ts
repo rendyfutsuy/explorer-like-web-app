@@ -1,7 +1,7 @@
 import { FolderRepository } from "../../infrastructure/repositories/folder.repository"
-import type { FolderRecord, FileRecord } from "@repo/shared-types"
+import type { ItemRecord } from "@repo/shared-types"
 
-export async function getFolderChildren(id: string): Promise<{ folders: FolderRecord[]; files: FileRecord[] }> {
+export async function getFolderChildren(id: string): Promise<ItemRecord[]> {
   const repo = new FolderRepository()
   return repo.getChildren(id)
 }

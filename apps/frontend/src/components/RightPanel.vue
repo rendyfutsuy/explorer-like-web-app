@@ -18,10 +18,10 @@
 
 
 <script setup lang="ts">
-import type { FolderRecord, FileRecord } from '@repo/shared-types'
+import type { ItemRecord } from '@repo/shared-types'
 import VirtualList from './VirtualList.vue'
 const emit = defineEmits<{ (e: 'open-folder', id: string): void; (e: 'open-parent'): void }>()
-defineProps<{ folders: FolderRecord[]; files: FileRecord[]; parentId: string | null }>()
+defineProps<{ folders: ItemRecord[]; files: ItemRecord[]; parentId: string | null }>()
 </script>
 
 <style scoped>

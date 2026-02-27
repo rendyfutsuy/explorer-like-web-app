@@ -3,7 +3,7 @@ import { ref, onMounted, computed, watch } from 'vue'
 import { createPinia, storeToRefs } from 'pinia'
 import FolderTree from './components/FolderTree.vue'
 import RightPanel from './components/RightPanel.vue'
-import type { FolderNode, FolderRecord, FileRecord } from '@repo/shared-types'
+import type { FolderNode, ItemRecord } from '@repo/shared-types'
 import { useFoldersStore } from './stores/folders'
 
 const store = useFoldersStore()
@@ -36,8 +36,9 @@ function filterTree(nodes: FolderNode[], q: string): FolderNode[] {
 }
 
 const filtered = computed(() => filterTree(tree.value, query.value))
-const folders = computed(() => children.value.folders)
-const files = computed(() => children.value.files)
+const items = computed<ItemRecord[]>(() => children.value)
+const folders = computed(() => items.value.filter(i => !i.is_file))
+const files = computed(() => items.value.filter(i => i.is_file))
 const parentId = computed(() => store.getParent(selectedId.value))
 </script>
 

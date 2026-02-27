@@ -51,8 +51,7 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  Folder: 'Folder',
-  File: 'File'
+  Item: 'Item'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -71,26 +70,18 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-export const FolderScalarFieldEnum = {
+export const ItemScalarFieldEnum = {
   id: 'id',
   name: 'name',
   parent_id: 'parent_id',
+  size: 'size',
+  file_path: 'file_path',
+  is_file: 'is_file',
   created_at: 'created_at',
   updated_at: 'updated_at'
 } as const
 
-export type FolderScalarFieldEnum = (typeof FolderScalarFieldEnum)[keyof typeof FolderScalarFieldEnum]
-
-
-export const FileScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  folder_id: 'folder_id',
-  size: 'size',
-  created_at: 'created_at'
-} as const
-
-export type FileScalarFieldEnum = (typeof FileScalarFieldEnum)[keyof typeof FileScalarFieldEnum]
+export type ItemScalarFieldEnum = (typeof ItemScalarFieldEnum)[keyof typeof ItemScalarFieldEnum]
 
 
 export const SortOrder = {

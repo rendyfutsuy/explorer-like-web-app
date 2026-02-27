@@ -12,10 +12,12 @@ export type FolderRecord = {
   updated_at: Date
 }
 
-export type FileRecord = {
+export type ItemRecord = {
   id: string
   name: string
-  folder_id: string
-  size: number
+  parent_id: string | null
+  size: number | null
+  file_path: string | null
+  is_file: boolean
   created_at: Date
 }

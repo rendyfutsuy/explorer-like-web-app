@@ -29,8 +29,8 @@ export * from "./enums.js"
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Folders
- * const folders = await prisma.folder.findMany()
+ * // Fetch zero or more Items
+ * const items = await prisma.item.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -40,12 +40,7 @@ export type PrismaClient<LogOpts extends Prisma.LogLevel = never, OmitOpts exten
 export { Prisma }
 
 /**
- * Model Folder
+ * Model Item
  * 
  */
-export type Folder = Prisma.FolderModel
-/**
- * Model File
- * 
- */
-export type File = Prisma.FileModel
+export type Item = Prisma.ItemModel

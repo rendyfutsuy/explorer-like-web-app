@@ -9,24 +9,16 @@ datasource db {
   provider = "postgresql"
 }
 
-model Folder {
+model Item {
   id         String   @id @default(uuid())
   name       String
-  parent_id  String? 
+  parent_id  String?
+  size       BigInt?
+  file_path  String?
+  is_file    Boolean
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-  files      File[]
 
   @@index([parent_id])
-}
-
-model File {
-  id         String   @id @default(uuid())
-  name       String
-  folder_id  String
-  size       BigInt
-  created_at DateTime @default(now())
-  folder     Folder   @relation(fields: [folder_id], references: [id], onDelete: Cascade)
-
-  @@index([folder_id])
+  @@map("items")
 }

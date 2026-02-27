@@ -22,24 +22,32 @@ const prisma = new PrismaClient({ adapter })
 
 async function main() {
   const rootId = crypto.randomUUID()
-  const childA = crypto.randomUUID()
-  const childB = crypto.randomUUID()
-  const subA1 = crypto.randomUUID()
+  const documentsId = crypto.randomUUID()
+  const picturesId = crypto.randomUUID()
+  const reportsId = crypto.randomUUID()
 
-  await prisma.folder.createMany({
+  await prisma.item.createMany({
     data: [
-      { id: rootId, name: "root", parent_id: null },
-      { id: childA, name: "Documents", parent_id: rootId },
-      { id: childB, name: "Pictures", parent_id: rootId },
-      { id: subA1, name: "Reports", parent_id: childA }
-    ],
-    skipDuplicates: true
-  })
-
-  await prisma.file.createMany({
-    data: [
-      { id: crypto.randomUUID(), name: "Q1.pdf", folder_id: subA1, size: BigInt(123456) },
-      { id: crypto.randomUUID(), name: "photo.jpg", folder_id: childB, size: BigInt(98765) }
+      { id: rootId, name: "root", parent_id: null, is_file: false },
+      { id: documentsId, name: "Documents", parent_id: rootId, is_file: false },
+      { id: picturesId, name: "Pictures", parent_id: rootId, is_file: false },
+      { id: reportsId, name: "Reports", parent_id: documentsId, is_file: false },
+      {
+        id: crypto.randomUUID(),
+        name: "Q1.pdf",
+        parent_id: reportsId,
+        is_file: true,
+        size: BigInt(123456),
+        file_path: "/files/Q1.pdf"
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "photo.jpg",
+        parent_id: picturesId,
+        is_file: true,
+        size: BigInt(98765),
+        file_path: "/files/photo.jpg"
+      }
     ],
     skipDuplicates: true
   })
