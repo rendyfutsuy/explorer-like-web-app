@@ -6,7 +6,7 @@
   - PostgreSQL berjalan dan kredensial siap
 - Clone repo:
   ```bash
-  git clone <URL_REPO>
+  git clone git@github.com:rendyfutsuy/explorer-like-web-app.git
   cd explorer-like-web-app
   ```
 - Install dependencies (terpusat di root):
