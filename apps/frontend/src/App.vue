@@ -37,8 +37,6 @@ function filterTree(nodes: FolderNode[], q: string): FolderNode[] {
 
 const filtered = computed(() => filterTree(tree.value, query.value))
 const items = computed<ItemRecord[]>(() => children.value)
-const folders = computed(() => items.value.filter(i => !i.is_file))
-const files = computed(() => items.value.filter(i => i.is_file))
 const parentId = computed(() => store.getParent(selectedId.value))
 </script>
 
@@ -57,8 +55,7 @@ const parentId = computed(() => store.getParent(selectedId.value))
     </section>
     <section class="right">
       <RightPanel
-        :folders="folders"
-        :files="files"
+        :items="items"
         :parentId="parentId"
         @open-folder="onSelect"
         @open-parent="parentId && onSelect(parentId)"

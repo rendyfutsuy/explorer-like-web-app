@@ -1,16 +1,26 @@
 <template>
   <div class="right-panel">
     <button v-if="parentId" class="link parent" @click="emit('open-parent')" title="Kembali ke parent">⬅️ Parent</button>
-    <VirtualList class="list" :items="folders" :itemHeight="28" :height="240">
+    <VirtualList class="list" :items="items" :itemHeight="28" :height="240">
       <template #default="{ item }">
         <div class="row">
-          <button class="link" @click="emit('open-folder', item.id)">{{ item.name }}</button>
+          <button
+            v-if="!item.is_file"
+            class="link"
+            @click="emit('open-folder', item.id)"
+          >
+            {{ item.name }}
+          </button>
+          <a
+            v-else
+            class="link"
+            :href="item.file_path || '#'"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {{ item.name }}<span v-if="item.size != null"> ({{ item.size }} B)</span>
+          </a>
         </div>
-      </template>
-    </VirtualList>
-    <VirtualList class="list" :items="files" :itemHeight="28" :height="240">
-      <template #default="{ item }">
-        <div class="row">{{ item.name }} ({{ item.size }} B)</div>
       </template>
     </VirtualList>
   </div>
@@ -21,7 +31,7 @@
 import type { ItemRecord } from '@repo/shared-types'
 import VirtualList from './VirtualList.vue'
 const emit = defineEmits<{ (e: 'open-folder', id: string): void; (e: 'open-parent'): void }>()
-defineProps<{ folders: ItemRecord[]; files: ItemRecord[]; parentId: string | null }>()
+defineProps<{ items: ItemRecord[]; parentId: string | null }>()
 </script>
 
 <style scoped>
