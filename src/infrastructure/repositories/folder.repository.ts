@@ -73,7 +73,7 @@ export class FolderRepository {
         id: fl.id,
         name: fl.name,
         folder_id: fl.folder_id,
-        size: BigInt(fl.size),
+        size: Number(fl.size),
         created_at: fl.created_at
       }))
     }
