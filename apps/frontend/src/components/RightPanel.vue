@@ -1,9 +1,12 @@
 <template>
   <div class="right-panel">
-    <button v-if="parentId" class="link parent" @click="emit('open-parent')" title="Kembali ke parent">⬅️ Parent</button>
+    <div class="row" v-if="parentId">
+        <button class="link" @click="emit('open-parent')" title="Kembali ke parent">...</button>
+    </div>
     <VirtualList class="list" :items="items" :itemHeight="28" :height="240">
       <template #default="{ item }">
         <div class="row">
+          <span v-if="!item.is_file" class="icon">📁</span>
           <button
             v-if="!item.is_file"
             class="link"
@@ -35,9 +38,10 @@ defineProps<{ items: ItemRecord[]; parentId: string | null }>()
 </script>
 
 <style scoped>
-.right-panel { padding: 8px 16px 16px 16px; border-left: 1px solid #ddd; }
+.right-panel { padding: 8px 8px 16px 0; border-left: 1px solid #ddd; }
 .parent { margin-bottom: 4px; }
 .list { margin-top: 4px; }
-.row { display: flex; align-items: center; height: 28px; padding: 0 8px; }
+.row { display: flex; align-items: center; height: 28px; padding: 0 4px; }
 .link { background: none; border: none; color: #1e88e5; cursor: pointer; padding: 0; }
+.icon { margin-right: 6px; }
 </style>
