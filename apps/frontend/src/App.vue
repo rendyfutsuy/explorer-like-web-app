@@ -66,8 +66,8 @@ const parentId = computed(() => store.getParent(selectedId.value))
 
 <style scoped>
 .layout { display: grid; grid-template-columns: 300px 1fr; grid-template-rows: auto 1fr; width: 100vw; height: 100vh; }
-.topbar { grid-column: 1 / span 2; padding: 8px; border-bottom: 1px solid #ddd; }
-.search { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; }
+.topbar { grid-column: 1 / span 2; padding: 8px; border-bottom: 1px solid #ddd; display: flex; justify-content: flex-end; align-items: center; }
+.search { width: 320px; padding: 8px; border: 1px solid #ddd; border-radius: 6px; }
 .left { overflow: auto; padding: 12px; }
 .right { overflow: auto; }
 </style>
