@@ -7,7 +7,7 @@ import type { FolderNode, FolderRecord, FileRecord } from '@repo/shared-types'
 import { useFoldersStore } from './stores/folders'
 
 const store = useFoldersStore()
-const { tree, children } = storeToRefs(store)
+const { tree, children, selectedId } = storeToRefs(store)
 const query = ref('')
 
 const baseUrl = `${location.protocol}//${location.hostname}:8081`
@@ -38,6 +38,7 @@ function filterTree(nodes: FolderNode[], q: string): FolderNode[] {
 const filtered = computed(() => filterTree(tree.value, query.value))
 const folders = computed(() => children.value.folders)
 const files = computed(() => children.value.files)
+const parentId = computed(() => store.getParent(selectedId.value))
 </script>
 
 <template>
@@ -54,7 +55,13 @@ const files = computed(() => children.value.files)
       <FolderTree :tree="filtered" @select="onSelect" />
     </section>
     <section class="right">
-      <RightPanel :folders="folders" :files="files" />
+      <RightPanel
+        :folders="folders"
+        :files="files"
+        :parentId="parentId"
+        @open-folder="onSelect"
+        @open-parent="parentId && onSelect(parentId)"
+      />
     </section>
   </div>
 </template>

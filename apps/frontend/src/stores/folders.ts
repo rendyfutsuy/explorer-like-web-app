@@ -9,10 +9,20 @@ export const useFoldersStore = defineStore('folders', () => {
   const children = ref<{ folders: FolderRecord[]; files: FileRecord[] }>({ folders: [], files: [] })
   const selectedId = ref<string | null>(null)
   const searchQuery = ref('')
+  const parentMap = ref<Record<string, string | null>>({})
 
   async function loadTree() {
     const res = await fetch(`${baseUrl}/api/v1/folders/tree`)
     tree.value = await res.json()
+    const map: Record<string, string | null> = {}
+    const walk = (nodes: FolderNode[], parent: string | null) => {
+      for (const n of nodes) {
+        map[n.id] = parent
+        if (n.children?.length) walk(n.children, n.id)
+      }
+    }
+    walk(tree.value, null)
+    parentMap.value = map
   }
 
   async function loadChildren(id: string) {
@@ -21,5 +31,10 @@ export const useFoldersStore = defineStore('folders', () => {
     children.value = await res.json()
   }
 
-  return { tree, children, selectedId, searchQuery, loadTree, loadChildren }
+  function getParent(id: string | null): string | null {
+    if (!id) return null
+    return parentMap.value[id] ?? null
+  }
+
+  return { tree, children, selectedId, searchQuery, loadTree, loadChildren, getParent }
 })
