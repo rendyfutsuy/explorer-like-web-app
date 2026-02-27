@@ -1,8 +1,6 @@
 <template>
   <div class="right-panel">
-    <h3>Children</h3>
     <div class="section">
-      <h4>Folders</h4>
       <VirtualList :items="folders" :itemHeight="28" :height="280">
         <template #default="{ item }">
           <div class="row">{{ item.name }}</div>
@@ -10,7 +8,6 @@
       </VirtualList>
     </div>
     <div class="section">
-      <h4>Files</h4>
       <VirtualList :items="files" :itemHeight="28" :height="280">
         <template #default="{ item }">
           <div class="row">{{ item.name }} ({{ item.size }} B)</div>

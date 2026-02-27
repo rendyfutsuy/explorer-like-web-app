@@ -1,20 +1,21 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, watch } from 'vue'
-import { createPinia } from 'pinia'
+import { createPinia, storeToRefs } from 'pinia'
 import FolderTree from './components/FolderTree.vue'
 import RightPanel from './components/RightPanel.vue'
 import type { FolderNode, FolderRecord, FileRecord } from '@repo/shared-types'
 import { useFoldersStore } from './stores/folders'
 
 const store = useFoldersStore()
-const tree = computed(() => store.tree)
-const children = computed(() => store.children)
+const { tree, children } = storeToRefs(store)
 const query = ref('')
 
 const baseUrl = `${location.protocol}//${location.hostname}:8081`
 
 onMounted(async () => {
   await store.loadTree()
+  const first = tree.value[0]
+  if (first) await store.loadChildren(first.id)
 })
 
 async function onSelect(id: string) {
@@ -34,7 +35,9 @@ function filterTree(nodes: FolderNode[], q: string): FolderNode[] {
   return nodes.map(visit).filter(Boolean) as FolderNode[]
 }
 
-const filtered = computed(() => filterTree(store.tree, query.value))
+const filtered = computed(() => filterTree(tree.value, query.value))
+const folders = computed(() => children.value.folders)
+const files = computed(() => children.value.files)
 </script>
 
 <template>
@@ -51,7 +54,7 @@ const filtered = computed(() => filterTree(store.tree, query.value))
       <FolderTree :tree="filtered" @select="onSelect" />
     </section>
     <section class="right">
-      <RightPanel :folders="children.folders" :files="children.files" />
+      <RightPanel :folders="folders" :files="files" />
     </section>
   </div>
 </template>

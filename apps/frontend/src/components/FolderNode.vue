@@ -20,10 +20,10 @@ import { ref } from 'vue'
 import type { FolderNode as FolderNodeType } from '@repo/shared-types'
 import FolderNode from './FolderNode.vue'
 
-const props = defineProps<{ folder: FolderNodeType }>()
+const props = defineProps<{ folder: FolderNodeType; defaultOpen?: boolean }>()
 const emit = defineEmits<{ (e: 'select', id: string): void }>()
 
-const isOpen = ref(false)
+const isOpen = ref(!!props.defaultOpen)
 const toggle = () => { isOpen.value = !isOpen.value }
 const select = () => emit('select', props.folder.id)
 </script>

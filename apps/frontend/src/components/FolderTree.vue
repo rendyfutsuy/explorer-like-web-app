@@ -4,6 +4,7 @@
       v-for="node in tree"
       :key="node.id"
       :folder="node"
+      :defaultOpen="true"
       @select="emit('select', $event)"
     />
   </div>

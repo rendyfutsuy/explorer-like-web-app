@@ -28,15 +28,14 @@ const props = defineProps<{
 
 const container = ref<HTMLDivElement | null>(null)
 const start = ref(0)
-const end = ref(0)
 const totalHeight = computed(() => props.items.length * props.itemHeight)
 const visibleCount = computed(() => Math.ceil(props.height / props.itemHeight) + 2)
-const visibleItems = computed(() => props.items.slice(start.value, Math.min(props.items.length, end.value)))
+const end = computed(() => Math.min(props.items.length, start.value + visibleCount.value))
+const visibleItems = computed(() => props.items.slice(start.value, end.value))
 
 function onScroll() {
   const top = container.value?.scrollTop ?? 0
   start.value = Math.max(0, Math.floor(top / props.itemHeight) - 1)
-  end.value = Math.min(props.items.length, start.value + visibleCount.value)
 }
 
 onScroll()
