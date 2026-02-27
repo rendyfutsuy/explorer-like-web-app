@@ -1,5 +1,44 @@
 # Explorer-like Web App
 
+## Instalasi
+- Prasyarat:
+  - Bun terpasang di mesin (versi terbaru disarankan)
+  - PostgreSQL berjalan dan kredensial siap
+- Clone repo:
+  ```bash
+  git clone <URL_REPO>
+  cd explorer-like-web-app
+  ```
+- Install dependencies (terpusat di root):
+  ```bash
+  bun install
+  ```
+- Buat file `.env` di root:
+  ```
+  PORT=8081
+  DATABASE_HOST=localhost
+  DATABASE_PORT=5432
+  DATABASE_USER=...
+  DATABASE_PASSWORD=...
+  DATABASE_DB_NAME=...
+  DATABASE_SSLMODE=disable
+  ```
+- Jalankan migrasi & seed:
+  ```bash
+  bun run prisma:migrate
+  bun run prisma:seed
+  ```
+- Jalankan server:
+  ```bash
+  # Backend (root)
+  bun run dev:backend
+  # Frontend (root)
+  bun run dev:frontend
+  ```
+- Akses:
+  - Backend: `http://localhost:8081`
+  - Frontend: `http://localhost:5173`
+
 ## Backend
 ### Menjalankan Server
 ```bash
@@ -69,8 +108,7 @@ Struktur schema berada di folder `prisma/`. Konfigurasi Prisma di `apps/backend/
 ## Frontend
 ### Menjalankan Frontend
 ```bash
-cd apps/frontend
-bun install
-bun run dev
+# dari root
+bun run dev:frontend
 ```
 Akses di `http://localhost:5173`. Frontend melakukan request ke backend base URL `http://localhost:8081`.
