@@ -9,9 +9,10 @@
     "prisma:migrate": "prisma migrate dev"
   },
   "dependencies": {
-    "elysia": "latest",
-    "@prisma/client": "latest",
+    "@elysiajs/cors": "^1.4.1",
     "@prisma/adapter-pg": "latest",
+    "@prisma/client": "latest",
+    "elysia": "latest",
     "pg": "latest"
   },
   "devDependencies": {
