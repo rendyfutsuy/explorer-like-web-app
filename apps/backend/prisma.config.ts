@@ -14,10 +14,7 @@ function buildDatabaseUrl() {
   const password = process.env.DATABASE_PASSWORD
   const dbname = process.env.DATABASE_DB_NAME
   const sslmode = process.env.DATABASE_SSLMODE ?? "disable"
-  if (host && port && user && password && dbname) {
-    return `postgresql://${user}:${password}@${host}:${port}/${dbname}?schema=public&sslmode=${sslmode}`
-  }
-  return process.env.DATABASE_URL ?? ""
+  return `postgresql://${user}:${password}@${host}:${port}/${dbname}?schema=public&sslmode=${sslmode}`
 }
 
 export default defineConfig({
