@@ -172,8 +172,8 @@ onBeforeUnmount(() => {
   position: fixed;
   right: 12px;
   bottom: 12px;
-  width: 48px;
-  height: 48px;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
   background: #1e88e5;
   color: #fff;
@@ -182,6 +182,6 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: 10px;
 }
 </style>
