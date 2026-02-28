@@ -1,0 +1,79 @@
+<template>
+  <div class="virtual" :style="{ height: height + 'px' }" @scroll="onScroll" ref="container">
+    <div :style="{ height: totalHeight + 'px', position: 'relative' }">
+      <div
+        v-for="(item, i) in visibleItems"
+        :key="start + i"
+        :style="{
+          position: 'absolute',
+          top: (start + i) * itemHeight + 'px',
+          height: itemHeight + 'px',
+          left: 0, right: 0
+        }"
+      >
+        <slot :item="item" :index="start + i" />
+      </div>
+      <div
+        ref="sentinel"
+        :style="{
+          position: 'absolute',
+          top: Math.max(0, totalHeight - 1) + 'px',
+          height: '1px',
+          left: 0, right: 0
+        }"
+      />
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+
+const props = withDefaults(defineProps<{
+  items: any[]
+  itemHeight: number
+  height: number
+  endOffset?: number
+}>(), { endOffset: 100 })
+
+const emit = defineEmits<{ (e: 'reach-end'): void }>()
+const container = ref<HTMLDivElement | null>(null)
+const sentinel = ref<HTMLDivElement | null>(null)
+let observer: IntersectionObserver | null = null
+const start = ref(0)
+const totalHeight = computed(() => props.items.length * props.itemHeight)
+const visibleCount = computed(() => Math.ceil(props.height / props.itemHeight) + 2)
+const end = computed(() => Math.min(props.items.length, start.value + visibleCount.value))
+const visibleItems = computed(() => props.items.slice(start.value, end.value))
+
+function onScroll() {
+  const top = container.value?.scrollTop ?? 0
+  start.value = Math.max(0, Math.floor(top / props.itemHeight) - 1)
+  const viewport = container.value?.clientHeight ?? 0
+  const bottom = top + viewport
+  if (bottom >= totalHeight.value - (props.endOffset ?? props.itemHeight)) emit('reach-end')
+}
+
+onScroll()
+
+onMounted(() => {
+  if (sentinel.value) {
+    observer = new IntersectionObserver((entries) => {
+      const e = entries[0]
+      if (e?.isIntersecting) emit('reach-end')
+    }, { root: container.value ?? undefined, threshold: 0, rootMargin: `0px 0px ${props.endOffset}px 0px` })
+    observer.observe(sentinel.value)
+  }
+})
+
+onBeforeUnmount(() => {
+  if (observer) {
+    observer.disconnect()
+    observer = null
+  }
+})
+</script>
+
+<style scoped>
+.virtual { overflow: auto; }
+</style>

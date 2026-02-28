@@ -1,0 +1,24 @@
+generator client {
+  provider   = "prisma-client"
+  engineType = "client"
+  runtime    = "bun"
+  output     = "./generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Item {
+  id         String   @id @default(uuid())
+  name       String
+  parent_id  String?
+  size       BigInt?
+  file_path  String?
+  is_file    Boolean
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@index([parent_id])
+  @@map("items")
+}
