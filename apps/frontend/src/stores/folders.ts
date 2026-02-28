@@ -10,6 +10,9 @@ export const useFoldersStore = defineStore('folders', () => {
   const selectedId = ref<string | null>(null)
   const searchQuery = ref('')
   const parentMap = ref<Record<string, string | null>>({})
+  const childrenPage = ref(1)
+  const childrenPerPage = ref(25)
+  const childrenTotal = ref(0)
 
   async function loadTree() {
     const res = await fetch(`${baseUrl}/api/v1/folders/tree`)
@@ -27,8 +30,23 @@ export const useFoldersStore = defineStore('folders', () => {
 
   async function loadChildren(id: string) {
     selectedId.value = id
-    const res = await fetch(`${baseUrl}/api/v1/folders/${id}/children`)
-    children.value = await res.json()
+    childrenPage.value = 1
+    const res = await fetch(`${baseUrl}/api/v1/folders/${id}/children?page=${childrenPage.value}&per_page=${childrenPerPage.value}`)
+    const data = await res.json()
+    children.value = data.items
+    childrenTotal.value = data.total
+    childrenPage.value = data.page
+  }
+
+  async function loadMoreChildren() {
+    if (!selectedId.value) return
+    if (children.value.length >= childrenTotal.value) return
+    const nextPage = childrenPage.value + 1
+    const res = await fetch(`${baseUrl}/api/v1/folders/${selectedId.value}/children?page=${nextPage}&per_page=${childrenPerPage.value}`)
+    const data = await res.json()
+    children.value = children.value.concat(data.items)
+    childrenTotal.value = data.total
+    childrenPage.value = data.page
   }
 
   function getParent(id: string | null): string | null {
@@ -36,5 +54,5 @@ export const useFoldersStore = defineStore('folders', () => {
     return parentMap.value[id] ?? null
   }
 
-  return { tree, children, selectedId, searchQuery, loadTree, loadChildren, getParent }
+  return { tree, children, selectedId, searchQuery, childrenPage, childrenPerPage, childrenTotal, loadTree, loadChildren, loadMoreChildren, getParent }
 })
