@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from 'vue'
+import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue'
 import { createPinia, storeToRefs } from 'pinia'
 import FolderTree from './components/FolderTree.vue'
 import RightPanel from './components/RightPanel.vue'
@@ -15,25 +15,45 @@ const resultsPage = ref(1)
 const resultsPerPage = ref(10)
 const resultsTotal = ref(0)
 const resultsBox = ref<HTMLDivElement | null>(null)
+const leftBox = ref<HTMLDivElement | null>(null)
+const leftEndSentinel = ref<HTMLDivElement | null>(null)
+let leftObserver: IntersectionObserver | null = null
+const LEFT_SCROLL_OFFSET = 100
+const DEBOUNCE_MS = 300
+let debounceTimer: number | null = null
+let searchAbort: AbortController | null = null
 
 const baseUrl = `${location.protocol}//${location.hostname}:8081`
 
 onMounted(async () => {
   await store.loadTree()
+  if (leftEndSentinel.value) {
+    leftObserver = new IntersectionObserver((entries) => {
+      const entry = entries[0]
+      if (entry?.isIntersecting) store.loadMoreTree()
+    }, { root: leftBox.value ?? undefined, threshold: 0, rootMargin: `0px 0px ${LEFT_SCROLL_OFFSET}px 0px` })
+    leftObserver.observe(leftEndSentinel.value)
+  }
 })
 
 async function onSelect(id: string) {
   await store.loadChildren(id)
 }
 
-async function search(q: string) {
+async function runSearch(q: string) {
   if (!q) {
     results.value = []
     showResults.value = false
+    if (searchAbort) {
+      searchAbort.abort()
+      searchAbort = null
+    }
     return
   }
   resultsPage.value = 1
-  const res = await fetch(`${baseUrl}/api/v1/items?q=${encodeURIComponent(q)}&page=${resultsPage.value}&per_page=${resultsPerPage.value}`)
+  if (searchAbort) searchAbort.abort()
+  searchAbort = new AbortController()
+  const res = await fetch(`${baseUrl}/api/v1/items?q=${encodeURIComponent(q)}&page=${resultsPage.value}&per_page=${resultsPerPage.value}`, { signal: searchAbort.signal })
   const data = await res.json()
   results.value = data.items
   resultsTotal.value = data.total
@@ -41,7 +61,13 @@ async function search(q: string) {
   showResults.value = true
 }
 
-watch(query, (v) => { search(v) })
+watch(query, (v) => {
+  if (debounceTimer != null) clearTimeout(debounceTimer)
+  debounceTimer = window.setTimeout(() => {
+    runSearch(v)
+    debounceTimer = null
+  }, DEBOUNCE_MS)
+})
 const items = computed<ItemRecord[]>(() => children.value)
 const parentId = computed(() => store.getParent(selectedId.value))
 
@@ -72,6 +98,22 @@ function onResultsScroll(e: Event) {
   const bottom = el.scrollTop + el.clientHeight
   if (bottom >= el.scrollHeight - 28) loadMoreResults()
 }
+
+function onLeftScroll() {
+  const el = leftBox.value
+  if (!el) return
+  const bottom = el.scrollTop + el.clientHeight
+  if (bottom >= el.scrollHeight - LEFT_SCROLL_OFFSET) store.loadMoreTree()
+}
+
+onBeforeUnmount(() => {
+  if (leftObserver) {
+    leftObserver.disconnect()
+    leftObserver = null
+  }
+  if (debounceTimer != null) clearTimeout(debounceTimer)
+  if (searchAbort) searchAbort.abort()
+})
 </script>
 
 <template>
@@ -93,8 +135,9 @@ function onResultsScroll(e: Event) {
         </div>
       </div>
     </header>
-    <section class="left">
+    <section class="left" ref="leftBox" @scroll="onLeftScroll">
       <FolderTree :tree="tree" @select="onSelect" />
+      <div ref="leftEndSentinel" style="height: 1px;"></div>
     </section>
     <section class="right">
       <RightPanel

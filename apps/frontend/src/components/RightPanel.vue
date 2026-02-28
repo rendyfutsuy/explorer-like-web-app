@@ -3,7 +3,7 @@
     <div class="row" v-if="parentId">
         <button class="link" @click="emit('open-parent')" title="Kembali ke parent">...</button>
     </div>
-    <VirtualList class="list" :items="items" :itemHeight="28" :height="listHeight" @reach-end="emit('load-more')">
+    <VirtualList class="list" :items="items" :itemHeight="28" :height="listHeight" :endOffset="100" @reach-end="emit('load-more')">
       <template #default="{ item }">
         <div class="row">
           <span v-if="!item.is_file" class="icon">📁</span>
