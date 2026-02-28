@@ -103,7 +103,7 @@ curl http://localhost:8081/api/v1/folders/<folderId>/children
 bun run prisma:migrate
 bun run prisma:seed
 ```
-Struktur schema berada di folder `prisma/`. Konfigurasi Prisma di `apps/backend/prisma.config.ts`.
+ Struktur schema berada di `apps/backend/prisma/`. Konfigurasi Prisma di `apps/backend/prisma.config.ts`.
 
 ## Frontend
 ### Menjalankan Frontend
