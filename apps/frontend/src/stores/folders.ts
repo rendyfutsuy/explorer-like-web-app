@@ -2,7 +2,9 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type { FolderNode, FolderRecord, ItemRecord } from '@repo/shared-types'
 
-const baseUrl = `${location.protocol}//${location.hostname}:8081`
+const baseUrl = typeof location !== 'undefined' 
+  ? `${location.protocol}//${location.hostname}:8081`
+  : 'http://localhost:8081'
 
 export const useFoldersStore = defineStore('folders', () => {
   const tree = ref<FolderNode[]>([])
