@@ -80,7 +80,14 @@ function pickItem(item: ItemRecord) {
         @open-parent="parentId && onSelect(parentId)"
       />
     </section>
-    <a class="api-doc" :href="`${baseUrl}/swagger`" target="_blank" rel="noopener">API Doc</a>
+    <a
+      class="api-doc"
+      :href="`${baseUrl}/swagger`"
+      target="_blank"
+      rel="noopener"
+      title="To API Documentation"
+      aria-label="To API Documentation"
+    >📄</a>
   </div>
 </template>
 
@@ -93,5 +100,20 @@ function pickItem(item: ItemRecord) {
 .result-link { background: none; border: none; color: #1e88e5; cursor: pointer; padding: 0; display: flex; gap: 6px; align-items: center; }
 .left { overflow: auto; padding: 12px; }
 .right { overflow: auto; }
-.api-doc { position: fixed; right: 12px; bottom: 12px; background: #1e88e5; color: #fff; padding: 8px 12px; border-radius: 6px; text-decoration: none; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+.api-doc {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #1e88e5;
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
 </style>
