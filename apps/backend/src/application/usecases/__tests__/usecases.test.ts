@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 import { getFolderChildren } from '../get-folder-children'
-import { getFolderTree } from '../get-folder-tree'
+import { getFolderTree, getFolderTreePaged } from '../get-folder-tree'
 import type { ItemRecord, FolderNode } from '@repo/shared-types'
 import type { FolderRepository } from '../../../infrastructure/repositories/folder.repository'
 
@@ -12,8 +12,9 @@ describe('getFolderChildren', () => {
         name: 'file1.txt',
         parent_id: 'folder1',
         is_file: true,
-        size: BigInt(1024),
-        file_path: '/files/file1.txt'
+        size: 1024,
+        file_path: '/files/file1.txt',
+        created_at: new Date()
       },
       {
         id: '2',
@@ -21,7 +22,8 @@ describe('getFolderChildren', () => {
         parent_id: 'folder1',
         is_file: false,
         size: null,
-        file_path: null
+        file_path: null,
+        created_at: new Date()
       }
     ]
 
@@ -82,5 +84,33 @@ describe('getFolderTree', () => {
 
     expect(mockRepo.getFolderTree).toHaveBeenCalled()
     expect(result).toEqual([])
+  })
+})
+
+describe('getFolderTreePaged', () => {
+  it('should return paginated folder tree with metadata', async () => {
+    const mockTree: FolderNode[] = [
+      { id: 'a', name: 'A', children: [] },
+      { id: 'b', name: 'B', children: [] }
+    ]
+    const mockRepo: Pick<FolderRepository, 'getFolderTreePaged'> = {
+      getFolderTreePaged: vi.fn().mockResolvedValue({ tree: mockTree, total: 42 })
+    }
+    const page = 2
+    const perPage = 10
+    const result = await getFolderTreePaged(page, perPage, mockRepo)
+    expect(mockRepo.getFolderTreePaged).toHaveBeenCalledWith(page, perPage)
+    expect(result.tree).toEqual(mockTree)
+    expect(result.total).toEqual(42)
+  })
+
+  it('should return empty tree when no folders', async () => {
+    const mockRepo: Pick<FolderRepository, 'getFolderTreePaged'> = {
+      getFolderTreePaged: vi.fn().mockResolvedValue({ tree: [], total: 0 })
+    }
+    const result = await getFolderTreePaged(1, 10, mockRepo)
+    expect(mockRepo.getFolderTreePaged).toHaveBeenCalledWith(1, 10)
+    expect(result.tree).toEqual([])
+    expect(result.total).toEqual(0)
   })
 })

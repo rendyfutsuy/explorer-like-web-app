@@ -6,3 +6,11 @@ export async function getFolderTree(
 ): Promise<FolderNode[]> {
   return repo.getFolderTree()
 }
+
+export async function getFolderTreePaged(
+  page: number,
+  perPage: number,
+  repo: Pick<FolderRepository, "getFolderTreePaged"> = new FolderRepository()
+): Promise<{ tree: FolderNode[]; total: number }> {
+  return repo.getFolderTreePaged(page, perPage)
+}

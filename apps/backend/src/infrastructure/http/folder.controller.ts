@@ -1,5 +1,5 @@
 import { Elysia, t } from "elysia"
-import { getFolderTree } from "../../application/usecases/get-folder-tree"
+import { getFolderTree, getFolderTreePaged } from "../../application/usecases/get-folder-tree"
 import { getFolderChildren } from "../../application/usecases/get-folder-children"
 import { FolderRepository } from "../repositories/folder.repository"
 
@@ -21,18 +21,34 @@ export function registerFolderController(app: Elysia): void {
 
   app.get(
     "/api/v1/folders/tree",
-    async () => {
-      const tree = await getFolderTree()
-      return tree
+    async ({ query }) => {
+      const page = Number(query?.page ?? 1)
+      const perPage = Number(query?.per_page ?? 10)
+      const { tree, total } = await getFolderTreePaged(page, perPage)
+      return {
+        tree,
+        page,
+        per_page: perPage,
+        total
+      }
     },
     {
       detail: {
         summary: "Get folder tree",
-        description: "Mengambil seluruh struktur folder sebagai tree",
+        description: "Mengambil struktur folder sebagai tree dengan pagination",
         tags: ["folders"]
       },
+      query: t.Object({
+        page: t.Optional(t.Number()),
+        per_page: t.Optional(t.Number())
+      }),
       response: {
-        200: t.Array(folderNodeSchema)
+        200: t.Object({
+          tree: t.Array(folderNodeSchema),
+          page: t.Number(),
+          per_page: t.Number(),
+          total: t.Number()
+        })
       }
     }
   )

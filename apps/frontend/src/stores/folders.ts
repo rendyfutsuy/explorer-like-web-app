@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import type { FolderNode, FolderRecord, ItemRecord } from '@repo/shared-types'
+import type { FolderNode, ItemRecord } from '@repo/shared-types'
 
 const baseUrl = typeof location !== 'undefined' 
   ? `${location.protocol}//${location.hostname}:8081`
@@ -12,13 +12,19 @@ export const useFoldersStore = defineStore('folders', () => {
   const selectedId = ref<string | null>(null)
   const searchQuery = ref('')
   const parentMap = ref<Record<string, string | null>>({})
+  const treePage = ref(1)
+  const treePerPage = ref(10)
+  const treeTotal = ref(0)
   const childrenPage = ref(1)
   const childrenPerPage = ref(25)
   const childrenTotal = ref(0)
 
   async function loadTree() {
-    const res = await fetch(`${baseUrl}/api/v1/folders/tree`)
-    tree.value = await res.json()
+    const res = await fetch(`${baseUrl}/api/v1/folders/tree?page=${treePage.value}&per_page=${treePerPage.value}`)
+    const data = await res.json()
+    tree.value = data.tree ?? []
+    treeTotal.value = data.total ?? 0
+    treePage.value = data.page ?? treePage.value
     const map: Record<string, string | null> = {}
     const walk = (nodes: FolderNode[], parent: string | null) => {
       for (const n of nodes) {
@@ -56,5 +62,5 @@ export const useFoldersStore = defineStore('folders', () => {
     return parentMap.value[id] ?? null
   }
 
-  return { tree, children, selectedId, searchQuery, childrenPage, childrenPerPage, childrenTotal, loadTree, loadChildren, loadMoreChildren, getParent }
+  return { tree, children, selectedId, searchQuery, treePage, treePerPage, treeTotal, childrenPage, childrenPerPage, childrenTotal, loadTree, loadChildren, loadMoreChildren, getParent }
 })
