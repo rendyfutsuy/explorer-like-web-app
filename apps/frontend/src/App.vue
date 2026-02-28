@@ -16,8 +16,6 @@ const baseUrl = `${location.protocol}//${location.hostname}:8081`
 
 onMounted(async () => {
   await store.loadTree()
-  const first = tree.value[0]
-  if (first) await store.loadChildren(first.id)
 })
 
 async function onSelect(id: string) {
