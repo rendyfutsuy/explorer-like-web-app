@@ -3,7 +3,7 @@
     <div class="row" v-if="parentId">
         <button class="link" @click="emit('open-parent')" title="Kembali ke parent">...</button>
     </div>
-    <VirtualList class="list" :items="items" :itemHeight="28" :height="listHeight">
+    <VirtualList class="list" :items="items" :itemHeight="28" :height="listHeight" @reach-end="emit('load-more')">
       <template #default="{ item }">
         <div class="row">
           <span v-if="!item.is_file" class="icon">📁</span>
@@ -34,7 +34,7 @@
 import type { ItemRecord } from '@repo/shared-types'
 import VirtualList from './VirtualList.vue'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
-const emit = defineEmits<{ (e: 'open-folder', id: string): void; (e: 'open-parent'): void }>()
+const emit = defineEmits<{ (e: 'open-folder', id: string): void; (e: 'open-parent'): void; (e: 'load-more'): void }>()
 defineProps<{ items: ItemRecord[]; parentId: string | null }>()
 const container = ref<HTMLDivElement | null>(null)
 const listHeight = ref(240)

@@ -5,7 +5,7 @@
       <FolderTree :tree="foldersStore.tree" @select="selectFolder" />
     </div>
     <div class="main">
-      <RightPanel :items="foldersStore.children" :parentId="foldersStore.selectedId" />
+      <RightPanel :items="foldersStore.children" :parentId="foldersStore.selectedId" @load-more="foldersStore.loadMoreChildren()" />
     </div>
   </div>
 </template>

@@ -26,6 +26,7 @@ const props = defineProps<{
   height: number
 }>()
 
+const emit = defineEmits<{ (e: 'reach-end'): void }>()
 const container = ref<HTMLDivElement | null>(null)
 const start = ref(0)
 const totalHeight = computed(() => props.items.length * props.itemHeight)
@@ -36,6 +37,9 @@ const visibleItems = computed(() => props.items.slice(start.value, end.value))
 function onScroll() {
   const top = container.value?.scrollTop ?? 0
   start.value = Math.max(0, Math.floor(top / props.itemHeight) - 1)
+  const viewport = container.value?.clientHeight ?? 0
+  const bottom = top + viewport
+  if (bottom >= totalHeight.value - props.itemHeight) emit('reach-end')
 }
 
 onScroll()

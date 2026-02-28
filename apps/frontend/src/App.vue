@@ -11,6 +11,10 @@ const { tree, children, selectedId } = storeToRefs(store)
 const query = ref('')
 const results = ref<ItemRecord[]>([])
 const showResults = ref(false)
+const resultsPage = ref(1)
+const resultsPerPage = ref(10)
+const resultsTotal = ref(0)
+const resultsBox = ref<HTMLDivElement | null>(null)
 
 const baseUrl = `${location.protocol}//${location.hostname}:8081`
 
@@ -28,8 +32,12 @@ async function search(q: string) {
     showResults.value = false
     return
   }
-  const res = await fetch(`${baseUrl}/api/v1/items?q=${encodeURIComponent(q)}`)
-  results.value = await res.json()
+  resultsPage.value = 1
+  const res = await fetch(`${baseUrl}/api/v1/items?q=${encodeURIComponent(q)}&page=${resultsPage.value}&per_page=${resultsPerPage.value}`)
+  const data = await res.json()
+  results.value = data.items
+  resultsTotal.value = data.total
+  resultsPage.value = data.page
   showResults.value = true
 }
 
@@ -46,6 +54,24 @@ function pickItem(item: ItemRecord) {
   }
   onSelect(item.id)
 }
+
+async function loadMoreResults() {
+  if (!query.value) return
+  if (results.value.length >= resultsTotal.value) return
+  const next = resultsPage.value + 1
+  const res = await fetch(`${baseUrl}/api/v1/items?q=${encodeURIComponent(query.value)}&page=${next}&per_page=${resultsPerPage.value}`)
+  const data = await res.json()
+  results.value = results.value.concat(data.items)
+  resultsTotal.value = data.total
+  resultsPage.value = data.page
+}
+
+function onResultsScroll(e: Event) {
+  const el = resultsBox.value
+  if (!el) return
+  const bottom = el.scrollTop + el.clientHeight
+  if (bottom >= el.scrollHeight - 28) loadMoreResults()
+}
 </script>
 
 <template>
@@ -57,7 +83,7 @@ function pickItem(item: ItemRecord) {
         type="text"
         placeholder="Search folders..."
       />
-      <div v-if="showResults" class="results">
+      <div v-if="showResults" class="results" ref="resultsBox" @scroll="onResultsScroll">
         <div v-for="it in results" :key="it.id" class="result-row">
           <button class="result-link" @click="pickItem(it)">
             <span v-if="!it.is_file">📁</span>
@@ -76,6 +102,7 @@ function pickItem(item: ItemRecord) {
         :parentId="parentId"
         @open-folder="onSelect"
         @open-parent="parentId && onSelect(parentId)"
+        @load-more="store.loadMoreChildren()"
       />
     </section>
     <a
