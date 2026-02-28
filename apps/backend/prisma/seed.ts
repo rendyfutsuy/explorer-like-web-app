@@ -18,9 +18,6 @@ const adapter = new PrismaPg(
 const prisma = new PrismaClient({ adapter })
 
 async function main() {
-  const totalFolders = 500
-  const totalFiles = 500
-
   const items: Array<{
     id: string
     name: string
@@ -30,39 +27,47 @@ async function main() {
     file_path?: string | null
   }> = []
 
-  const rootIds: string[] = []
-  for (let r = 1; r <= 5; r++) {
-    const id = crypto.randomUUID()
-    rootIds.push(id)
-    items.push({ id, name: `root-${r}`, parent_id: null, is_file: false })
-  }
+  let fileSeq = 1
+  for (let r = 1; r <= 20; r++) {
+    const rootId = crypto.randomUUID()
+    items.push({ id: rootId, name: `root-${r}`, parent_id: null, is_file: false })
 
-  let folderCount = 5
-  let fileCount = 0
-  const queue: string[] = [...rootIds]
+    for (let c = 1; c <= 20; c++) {
+      const childId = crypto.randomUUID()
+      items.push({ id: childId, name: `folder-${r}-${c}`, parent_id: rootId, is_file: false })
 
-  while ((folderCount < totalFolders || fileCount < totalFiles) && queue.length) {
-    const parent = queue.shift()!
+      for (let s = 1; s <= 2; s++) {
+        const subId = crypto.randomUUID()
+        items.push({ id: subId, name: `folder-${r}-${c}-${s}`, parent_id: childId, is_file: false })
 
-    for (let i = 0; i < 5 && folderCount < totalFolders; i++) {
-      const id = crypto.randomUUID()
-      items.push({ id, name: `folder-${folderCount}`, parent_id: parent, is_file: false })
-      queue.push(id)
-      folderCount++
+        for (let f = 1; f <= 2; f++) {
+          const fileId = crypto.randomUUID()
+          const size = BigInt(10_000 + (fileSeq % 90_000))
+          items.push({
+            id: fileId,
+            name: `file-${r}-${c}-${s}-${f}.txt`,
+            parent_id: subId,
+            is_file: true,
+            size,
+            file_path: `/files/file-${r}-${c}-${s}-${f}.txt`
+          })
+          fileSeq++
+        }
+      }
     }
 
-    for (let j = 0; j < 2 && fileCount < totalFiles; j++) {
-      const id = crypto.randomUUID()
-      const size = BigInt(10_000 + (fileCount % 90_000))
+    for (let rf = 1; rf <= 15; rf++) {
+      const fileId = crypto.randomUUID()
+      const size = BigInt(10_000 + (fileSeq % 90_000))
       items.push({
-        id,
-        name: `file-${fileCount}.txt`,
-        parent_id: parent,
+        id: fileId,
+        name: `file-${r}-${rf}.txt`,
+        parent_id: rootId,
         is_file: true,
         size,
-        file_path: `/files/file-${fileCount}.txt`
+        file_path: `/files/file-${r}-${rf}.txt`
       })
-      fileCount++
+      fileSeq++
     }
   }
 
