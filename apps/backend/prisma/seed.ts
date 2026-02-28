@@ -32,7 +32,7 @@ async function main() {
     const rootId = crypto.randomUUID()
     items.push({ id: rootId, name: `root-${r}`, parent_id: null, is_file: false })
 
-    for (let c = 1; c <= 20; c++) {
+    for (let c = 1; c <= 55; c++) {
       const childId = crypto.randomUUID()
       items.push({ id: childId, name: `folder-${r}-${c}`, parent_id: rootId, is_file: false })
 
@@ -56,7 +56,7 @@ async function main() {
       }
     }
 
-    for (let rf = 1; rf <= 15; rf++) {
+    for (let rf = 1; rf <= 45; rf++) {
       const fileId = crypto.randomUUID()
       const size = BigInt(10_000 + (fileSeq % 90_000))
       items.push({
