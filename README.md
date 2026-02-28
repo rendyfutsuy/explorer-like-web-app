@@ -112,3 +112,21 @@ bun run prisma:seed
 bun run dev:frontend
 ```
 Akses di `http://localhost:5173`. Frontend melakukan request ke backend base URL `http://localhost:8081`.
+
+## Testing
+- Menjalankan semua test:
+  ```bash
+  bun test --run
+  ```
+- Menjalankan test backend saja:
+  ```bash
+  bun test:backend --run
+  ```
+- Menjalankan test frontend saja:
+  ```bash
+  bun test:frontend --run
+  ```
+- Test UI (opsional):
+  ```bash
+  bun test:ui
+  ```
