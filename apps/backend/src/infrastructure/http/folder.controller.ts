@@ -13,8 +13,9 @@ export function registerFolderController(app: Elysia): void {
     name: t.String(),
     parent_id: t.Union([t.String(), t.Null()]),
     is_file: t.Boolean(),
-    size: t.Optional(t.Number()),
-    file_path: t.Optional(t.String())
+    size: t.Union([t.Number(), t.Null()]),
+    file_path: t.Union([t.String(), t.Null()]),
+    created_at: t.Date()
   })
 
   app.get(
