@@ -16,8 +16,9 @@ vi.mock('../../stores/folders', () => ({
 }))
 
 describe('ExplorerView', () => {
-  it('should have store available', () => {
-    const { useFoldersStore } = require('../../stores/folders')
+  it('should have store available', async () => {
+    // Import store setelah mock dibuat
+    const { useFoldersStore } = await import('../../stores/folders')
     const store = useFoldersStore()
     
     expect(store).toBeDefined()
@@ -26,8 +27,8 @@ describe('ExplorerView', () => {
     expect(store.loadMoreChildren).toBeDefined()
   })
 
-  it('should call loadTree when store is used', () => {
-    const { useFoldersStore } = require('../../stores/folders')
+  it('should call loadTree when store is used', async () => {
+    const { useFoldersStore } = await import('../../stores/folders')
     const store = useFoldersStore()
     
     store.loadTree()
@@ -35,8 +36,8 @@ describe('ExplorerView', () => {
     expect(store.loadTree).toHaveBeenCalled()
   })
 
-  it('should call loadChildren with correct parameter', () => {
-    const { useFoldersStore } = require('../../stores/folders')
+  it('should call loadChildren with correct parameter', async () => {
+    const { useFoldersStore } = await import('../../stores/folders')
     const store = useFoldersStore()
     
     store.loadChildren('folder1')
