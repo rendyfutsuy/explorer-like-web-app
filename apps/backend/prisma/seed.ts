@@ -30,12 +30,16 @@ async function main() {
     file_path?: string | null
   }> = []
 
-  const rootId = crypto.randomUUID()
-  items.push({ id: rootId, name: "root", parent_id: null, is_file: false })
+  const rootIds: string[] = []
+  for (let r = 1; r <= 5; r++) {
+    const id = crypto.randomUUID()
+    rootIds.push(id)
+    items.push({ id, name: `root-${r}`, parent_id: null, is_file: false })
+  }
 
-  let folderCount = 1
+  let folderCount = 5
   let fileCount = 0
-  const queue: string[] = [rootId]
+  const queue: string[] = [...rootIds]
 
   while ((folderCount < totalFolders || fileCount < totalFiles) && queue.length) {
     const parent = queue.shift()!

@@ -59,43 +59,6 @@ DATABASE_DB_NAME=...
 DATABASE_SSLMODE=disable
 ```
 
-## API
-Base: `http://localhost:8081`
-
-### GET /api/v1/folders/tree
-- Deskripsi: Mengambil seluruh struktur folder sebagai tree.
-- Response: `FolderNode[]`
-```json
-[
-  { "id": "root-id", "name": "root", "children": [
-    { "id": "child-a", "name": "Documents", "children": [] }
-  ] }
-]
-```
-- Contoh:
-```bash
-curl http://localhost:8081/api/v1/folders/tree
-```
-
-### GET /api/v1/folders/:id/children
-- Deskripsi: Mengambil anak-anak dari folder tertentu.
-- Params: `id` (string)
-- Response:
-```json
-{
-  "folders": [
-    { "id": "child-a", "name": "Documents", "parent_id": "root-id" }
-  ],
-  "files": [
-    { "id": "file-1", "name": "photo.jpg", "folder_id": "pictures-id", "size": 98765 }
-  ]
-}
-```
-- Contoh:
-```bash
-curl http://localhost:8081/api/v1/folders/<folderId>/children
-```
-
 ## Database & Prisma
 ### Migrasi & Seed
 ```bash
