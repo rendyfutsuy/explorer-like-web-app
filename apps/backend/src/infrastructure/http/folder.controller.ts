@@ -1,6 +1,5 @@
 import { Elysia, t } from "elysia"
-import { getFolderTree, getFolderTreePaged } from "../../application/usecases/get-folder-tree"
-import { getFolderChildren } from "../../application/usecases/get-folder-children"
+import { getFolderTreePaged } from "../../application/usecases/get-folder-tree"
 import { FolderRepository } from "../repositories/folder.repository"
 
 export function registerFolderController(app: Elysia): void {
