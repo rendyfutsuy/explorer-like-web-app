@@ -1,3 +1,4 @@
+//  uses for backend and frontend layer.
 export type FolderNode = {
   id: string
   name: string
